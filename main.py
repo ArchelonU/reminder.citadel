@@ -8,11 +8,6 @@ import pytz
 from datetime import datetime
 time_zone = pytz.timezone('Europe/Moscow')
 
-# Переделать на сбор данных из json
-sections = [ "Сценбой", "Истфех", "секция Танцев", "Фаершоу", "Лучная секция" ]
-sections_chats = [ 2000000001, 2000000001, 2000000001, 2000000001, 2000000001 ]
-main_chat_id = 2000000001
-
 access_token=os.environ.get("VK_BOT_TOKEN")
 
 bot_session = vk_api.VkApi(token=access_token)
@@ -20,36 +15,43 @@ bot_api = bot_session.get_api()
 
 def main():
     load_sections_schedules()
-    schedule.every().second.do(sequence)
+    schedule.every().minute.do(sequence)
     while True:
         schedule.run_pending()
 
+def load_sections_schedules():
+    global timetable
+    with open('timetable.json') as f:
+        timetable = json.load(f)
+    f.close()
+
 def sequence():
+    global current_weekday, current_time
+    current_weekday = datetime.now(time_zone).isoweekday()
+    current_time = datetime.now(time_zone).time().strftime("%H:%M")
     find_duty_section()
     monday_notification()
     send_to_duty_section()
 
 def find_duty_section():
     global duty_section_id
-    duty_section_id = (datetime.now(time_zone).isocalendar().week) % len(sections)
+    duty_section_id = (datetime.now(time_zone).isocalendar().week) % len(timetable['schedules'])
 
 def monday_notification():
-    if datetime.now(time_zone).isoweekday() == 1 and datetime.now(time_zone).time().strftime("%H:%M:%S") == "09:00:00" : # Monday 9:00
-        monday_message = "На этой неделе дежурит ", sections[duty_section_id]
-        bot_session.method("messages.send", {"peer_id":main_chat_id, "message":monday_message,"random_id":0})
+    if current_weekday == 1 and current_time == "09:00" : # Monday 9:00
+        message = "На этой неделе дежурит " + str(timetable['schedules'][duty_section_id]['section_name'])
+        bot_session.method("messages.send", {"peer_id":int(timetable['maint_chat_id']), "message":message,"random_id":0})
         load_sections_schedules()
 
 def send_to_duty_section():
-    print(schedules_json) 
-    #print("without tz: ", datetime.now().isoweekday())
-    #print("with tz: ", datetime.now(time_zone).isoweekday())
-    #print(datetime.now(time_zone).time())
-    #print("duty_section_id: ", duty_section_id)
+    for schedule in timetable['schedules'][duty_section_id]['schedule']:
+        workout_weekday = schedule['weekday']
+        if current_weekday == int(workout_weekday):
+            workout_start = schedule['start']
+            workout_end = schedule['end']
+            if current_time == str(workout_start) or current_time == str(workout_end):
+                message = "Дружественное напоминание о дежурстве 🙌" #+ str(timetable['schedules'][duty_section_id]['section_name'])
+                bot_session.method("messages.send", {"peer_id":timetable['schedules'][duty_section_id]['chat_id'], "message":message,"random_id":0})
 
-def load_sections_schedules():
-    global schedules_json
-    with open('data.json') as f:
-        schedules_json = json.load(f)
-   
 if __name__ == '__main__':
     main()
