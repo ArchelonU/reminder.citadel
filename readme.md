@@ -43,8 +43,11 @@
 ### Автоматизация запуска
 Автоматизацию запуска можно сделать через создание `systemd` сервиса, либо с помощью `supervisor`, который помимо запуска может ещё и отслеживать состояние работы.
 
-Для использования `supervisor`, необходимо установить его пакет в созданное виртуальное окружение:
-`sudo /opt/reminder.citadel/bin/pip install supervisor`
+Для использования `supervisor` необходимо установить соответствующий пакет:
+`sudo apt update && sudo apt -y install supervisor`
 
-И при запуске, указать необходимый конфигурационный файл:
-`sudo /opt/reminder.citadel/bin/supervisord -c /home/user/reminder.citadel/supervisord.conf`
+Затем перенести файл конфигурации супервизора для приложения:
+`sudo cp /opt/reminder.citadel/supervisor.conf /etc/supervisor/conf.d/reminder.citadel.conf`
+
+После этого можно перезагрузить супервизор для подхвата конфигурации:
+`sudo supervisorctl reload`
