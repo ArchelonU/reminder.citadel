@@ -22,7 +22,7 @@ def main():
 
 def load_timetables():
     global timetables
-    with open('timetables.json') as f:
+    with open(os.path.dirname(__file__)+'/timetables.json') as f:
         timetables = json.load(f)
     f.close()
 
