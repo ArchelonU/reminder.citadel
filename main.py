@@ -41,12 +41,12 @@ def sequence():
 def monday_notifications():
     if current_weekday == 1 :
         match current_time:
-            case "09:00" : # Monday 9:00
+            case "09:00" :
                 message = "На этой неделе дежурит секция:\n" + str(duty_section['icon']) + " " + str(duty_section['name'])
                 bot_session.method("messages.send", {"peer_id":int(timetables['main_chat_id']), "message":message,"random_id":0})
-            case "14:00" : # Monday 14:00
+            case "14:00" :
                 previus_date = current_date - timedelta(days=7)
-                if current_date.month != previus_date.month :
+                if current_date.month != previus_date.month : # Первый понедельник месяца
                     for section in timetables['sections']:
                         message = "Напоминание о сдаче взносов. 💰\n\n👹 Казна сама себя не наполнит!"
                         bot_session.method("messages.send", {"peer_id":section['chat_id'], "message":message,"random_id":0})
