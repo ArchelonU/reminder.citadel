@@ -4,16 +4,16 @@
 `sudo apt update && sudo apt -y install pip python3-venv`
 
 Затем создать директорию виртуального окружения, например **/opt/reminder.citadel/**:  
-`sudo python3 -m venv /opt/reminder.citadel/`
+`sudo python3 -m venv /opt/reminder.citadel/python3-venv/`
 
 После чего можно проверить обновления для **pip** в виртуальном окружении:  
-`sudo /opt/reminder.citadel/bin/pip install --upgrade pip`
+`sudo /opt/reminder.citadel/python3-venv/bin/pip install --upgrade pip`
 
 И уже в виртуальном окружении установить используемые пакеты **pytz**, **schedule** и **vk_api**:  
-`sudo /opt/reminder.citadel/bin/pip install pytz schedule vk_api`
+`sudo /opt/reminder.citadel/python3-venv/bin/pip install pytz schedule vk_api`
 
 Запуск программы необходимо осуществлять интерпретатором из виртуального окружения с указанием расположения основного файла программы:  
-`/opt/reminder.citadel/bin/python3 /home/user/reminder.citadel/main.py`
+`/opt/reminder.citadel/python3-venv/bin/python3 /opt/reminder.citadel/main.py`
 
 ---
 Для отправки сообщений, необходимо прописать токен бота в переменные окружения.
@@ -25,10 +25,10 @@
 
 ---
 Для упращения запуска, можно сделать алиас, вызывающий нужный интерпретатор с аргументом, содержащим полный путь до основного файла программы:  
-`alias reminder.citadel.py="/opt/reminder.citadel/bin/python3 /home/user/reminder.citadel/main.py"`
+`alias reminder.citadel.py="/opt/reminder.citadel/python3-venv/bin/python3 /opt/reminder.citadel/main.py"`
 
 Чтобы алиас работал для всех пользователей, данную строку можно поместить в **/etc/bash.bashrc** (для чего снова потребуются права суперпользователя), например, так:
-`echo "alias reminder.citadel.py=\"/opt/reminder.citadel/bin/python3 /home/user/reminder.citadel/main.py\"" >> /etc/bash.bashrc`
+`echo "alias reminder.citadel.py=\"/opt/reminder.citadel/python3-venv/bin/python3 /opt/reminder.citadel/main.py\"" >> /etc/bash.bashrc`
 
 После добавления строки, необходимо либо перезайти, либо перечитать файл **/etc/bash.bashrc**:  
 `source /etc/bash.bashrc`
