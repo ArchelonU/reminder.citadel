@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
-time_zone = pytz.timezone("TIME_ZONE")
+time_zone = pytz.timezone(os.environ.get("TIME_ZONE"))
 vk_bot_token=os.environ.get("VK_BOT_TOKEN")
 
 bot_session = vk_api.VkApi(token=vk_bot_token)
