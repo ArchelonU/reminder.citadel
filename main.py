@@ -6,11 +6,15 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 import pytz
 from datetime import datetime, timedelta
-time_zone = pytz.timezone('Europe/Moscow')
 
-access_token=os.environ.get("VK_BOT_TOKEN")
+from dotenv import load_dotenv
 
-bot_session = vk_api.VkApi(token=access_token)
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
+time_zone = pytz.timezone("TIME_ZONE")
+vk_bot_token=os.environ.get("VK_BOT_TOKEN")
+
+bot_session = vk_api.VkApi(token=vk_bot_token)
 bot_api = bot_session.get_api()
 
 def main():
@@ -22,7 +26,7 @@ def main():
 
 def load_timetables():
     global timetables
-    with open(os.path.dirname(__file__)+'/timetables.json') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'timetables.json')) as f:
         timetables = json.load(f)
     f.close()
 

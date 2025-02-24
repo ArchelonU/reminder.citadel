@@ -15,8 +15,8 @@
 После чего можно проверить обновления для **pip** в виртуальном окружении:  
 `sudo /opt/reminder.citadel/python3-venv/bin/pip install --upgrade pip`
 
-И уже в виртуальном окружении установить используемые пакеты **pytz**, **schedule** и **vk_api**:  
-`sudo /opt/reminder.citadel/python3-venv/bin/pip install pytz schedule vk_api`
+И уже в виртуальном окружении установить используемые пакеты **pytz**, **schedule**, **vk_api** и **python-dotenv**:  
+`sudo /opt/reminder.citadel/python3-venv/bin/pip install pytz schedule vk_api python-dotenv`
 
 Запуск программы необходимо осуществлять интерпретатором из виртуального окружения с указанием расположения основного файла программы:  
 `/opt/reminder.citadel/python3-venv/bin/python3 /opt/reminder.citadel/main.py`
@@ -30,7 +30,7 @@
 `source /etc/bash.bashrc`
 
 ---
-Для упращения запуска, можно сделать алиас, вызывающий нужный интерпретатор с аргументом, содержащим полный путь до основного файла программы:  
+Для упращения ручного запуска, можно сделать алиас, вызывающий нужный интерпретатор с аргументом, содержащим полный путь до основного файла программы:  
 `alias reminder.citadel.py="/opt/reminder.citadel/python3-venv/bin/python3 /opt/reminder.citadel/main.py"`
 
 Чтобы алиас работал для всех пользователей, данную строку можно поместить в **/etc/bash.bashrc** (для чего снова потребуются права суперпользователя), например, так:  
